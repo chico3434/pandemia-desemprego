@@ -19,9 +19,10 @@ raça, sexo e idade.
 Inicialmente serão carregadas as bibliotecas usadas  
 
 ```{r }
-library(psych)
 library(kableExtra)
 library(stringr)
+library(ggplot2)
+library(psych)
 ```
 
 Após carregar as bibliotecas, será lido os dados que estão em um CSV gerado pelo Google forms  
@@ -39,8 +40,7 @@ O estudo conta com uma amostra de ``r dim(dados)[1]`` pessoas.
 Como todas as tabelas de frequência irão seguir o mesmo padrão, será feita uma função para gerá-las.  
 
 ```{r }
-tabela <- function(freq_abs) {
-  #freq_abs <- table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1)))
+tabela <- function(freq_abs, title) {
   freq_rel <- prop.table(freq_abs)
   porcentagem <- freq_rel*100
   
@@ -50,7 +50,7 @@ tabela <- function(freq_abs) {
   
   row.names(tabela)[dim(freq_abs)+1] <- 'Total'
   
-  kable(tabela, "html") %>%
+  kable(tabela, caption = title, align = 'ccc') %>%
     kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
 }
 ```
@@ -67,7 +67,7 @@ sturges <- nclass.Sturges(dados$idade)
 A tabela de frequência:  
 
 ```{r }
-tabela(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1))))
+tabela(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1))), 'Distribuição por faixa etária')
 
 ```
 
@@ -88,14 +88,21 @@ Sexo é uma variável categórica nominal.
 A tabela de frequência:  
 
 ```{r }
-tabela(table(dados$sexo))
+tabela(table(dados$sexo), 'Distribuição por sexo')
 ```
 
 
-Gráfico de setores com a distribuição da variável:  
+Gráfico de barras com a distribuição da variável:  
 
 ```{r }
-pie(x = table(dados$sexo), main = "Distribuição por sexo")
+
+sexo <- data.frame(label = row.names(table(dados$sexo)))
+
+ggplot(sexo, aes(x = label, y = table(dados$sexo))) +
+geom_col(fill = '#ff6060') +
+labs(title = "Distribuição por sexo",
+     x = "Sexo",
+     y = "Frequência")
 ```
 
 ### Raça
@@ -104,13 +111,20 @@ Raça é uma variável categórica nominal.
 A tabela de frequência:  
 
 ```{r }
-tabela(table(dados$raca))
+tabela(table(dados$raca), 'Distribuição por raça')
 ```
 
 Gráfico de setores com a distribuição da variável:  
 
 ```{r }
-pie(x = table(dados$raca), main = "Distribuição por raça")
+raca <- data.frame(label = row.names(table(dados$raca)))
+
+ggplot(raca, aes(x = label, y = table(dados$raca))) +
+geom_col(fill = '#60ff60') +
+labs(title = "Distribuição por raça",
+     x = "Raça",
+     y = "Frequência")+
+  coord_flip()
 ```
 
 ### Perdeu o emprego?  
@@ -120,14 +134,22 @@ Essa pergunta aceita com resposta sim ou não, logo é categórica nominal.
 A tabela de frequência:  
 
 ```{r }
-tabela(table(dados$perdeu_emprego))
+tabela(table(dados$perdeu_emprego), 'Distribuição por perda de emprego no período da pandemia')
 
 ```
 
 Gráfico de setores com a distribuição da variável:  
 
 ```{r }
-pie(x = table(dados$perdeu_emprego), main = 'Distribuição por perda de emprego no período da pandemia')
+perdeu_emprego <- data.frame(label = row.names(table(dados$perdeu_emprego)))
+
+ggplot(perdeu_emprego, aes(x = label, y = table(dados$perdeu_emprego))) +
+geom_col(fill = '#6060ff') +
+labs(title = "Distribuição por perda de emprego no período da pandemia",
+     x = "Perdeu emprego",
+     y = "Frequência")+
+  coord_flip()
+
 ```
 
 ### Motivo da perda do emprego  
@@ -151,13 +173,20 @@ logo apenas ``r dim(table(dados$motivo, exclude = ''))`` respostas serão analis
 A tabela de frequência:  
 
 ```{r }
-tabela(table(dados$motivo, exclude = ''))
+tabela(table(dados$motivo, exclude = ''), 'Distribuição por motivo da demissão')
 ```
 
 Gráfico de setores com a distribuição da variável:  
 
 ```{r }
-pie(x = table(dados$motivo, exclude = ''), main = 'Distribuição por motivo da demissão')
+motivo <- data.frame(label = row.names(table(dados$motivo, exclude = '')))
+
+ggplot(motivo, aes(x = label, y = table(dados$motivo, exclude = ''))) +
+geom_col(fill = '#ff60ff') +
+labs(title = "Distribuição por motivo da demissão",
+     x = "Motivo",
+     y = "Frequência")+
+  coord_flip()
 ```
 
 ### Fonte de renda
