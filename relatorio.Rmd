@@ -20,6 +20,7 @@ Inicialmente serão carregadas as bibliotecas usadas
 
 ```{r }
 library(psych)
+library(kableExtra)
 library(stringr)
 ```
 
@@ -35,6 +36,25 @@ colnames(dados) <- c('hora', 'idade', 'sexo', 'raca', 'perdeu_emprego', 'motivo'
 
 O estudo conta com uma amostra de ``r dim(dados)[1]`` pessoas.
 
+Como todas as tabelas de frequência irão seguir o mesmo padrão, será feita uma função para gerá-las.  
+
+```{r }
+tabela <- function(freq_abs) {
+  #freq_abs <- table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1)))
+  freq_rel <- prop.table(freq_abs)
+  porcentagem <- freq_rel*100
+  
+  tabela <- cbind(c(freq_abs, sum(freq_abs)), round(x = c(freq_rel, sum(freq_rel)), digits = 2), c(str_c(round(x = porcentagem, digits = 2), '%'), str_c(round(x = sum(porcentagem), digits = 2),'%')))
+  
+  colnames(tabela) <-  c('Freq. Abs.', 'Freq. Rel.', 'Porcentagem')
+  
+  row.names(tabela)[dim(freq_abs)+1] <- 'Total'
+  
+  kable(tabela, "html") %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+}
+```
+
 ### Idade
 Idade é uma variável quantitativa discreta, e por ter muitas idades diferentes, será dividida em intervalos.  
 
@@ -44,16 +64,11 @@ valores_idade <- describe(dados$idade)
 sturges <- nclass.Sturges(dados$idade)
 ```
 
-A tabela de frequência absoluta:  
+A tabela de frequência:  
 
 ```{r }
-table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1)))
-```
+tabela(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1))))
 
-A tabela de frequência relativa:  
-
-```{r }
-prop.table(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1))))
 ```
 
 Os valores da variável, como valores de medida central e de dispersão:  
@@ -70,17 +85,12 @@ hist(dados$idade, col = '#999999', freq = FALSE, ylab = 'Densidade', xlab = 'Ida
 ### Sexo
 Sexo é uma variável categórica nominal.  
 
-A tabela de frequência absuluta:  
+A tabela de frequência:  
 
 ```{r }
-table(dados$sexo)
+tabela(table(dados$sexo))
 ```
 
-A tabela de frequência relativa:  
-
-```{r }
-prop.table(table(dados$sexo))
-```
 
 Gráfico de setores com a distribuição da variável:  
 
@@ -91,16 +101,10 @@ pie(x = table(dados$sexo), main = "Distribuição por sexo")
 ### Raça
 Raça é uma variável categórica nominal.  
 
-A tabela de frequência absoluta:  
+A tabela de frequência:  
 
 ```{r }
-table(dados$raca)
-```
-
-A tabela de frequência relativa:  
-
-```{r }
-prop.table(table(dados$raca))
+tabela(table(dados$raca))
 ```
 
 Gráfico de setores com a distribuição da variável:  
@@ -113,16 +117,11 @@ pie(x = table(dados$raca), main = "Distribuição por raça")
 
 Essa pergunta aceita com resposta sim ou não, logo é categórica nominal.  
 
-A tabela de frequência absoluta:  
+A tabela de frequência:  
 
 ```{r }
-table(dados$perdeu_emprego)
-```
+tabela(table(dados$perdeu_emprego))
 
-A tabela de frequência relativa:  
-
-```{r }
-prop.table(table(dados$perdeu_emprego))
 ```
 
 Gráfico de setores com a distribuição da variável:  
@@ -149,16 +148,10 @@ Após isso pode-se fazer as tabelas.
 Como serão analisadas apenas as respostas de quem respondeu 'Sim' na anterior, 
 logo apenas ``r dim(table(dados$motivo, exclude = ''))`` respostas serão analisadas.  
 
-A tabela de frequência absoluta:  
+A tabela de frequência:  
 
 ```{r }
-table(dados$motivo, exclude = '')
-```
-
-A tabela de frequência relativa:  
-
-```{r }
-prop.table(table(dados$motivo, exclude = ''))
+tabela(table(dados$motivo, exclude = ''))
 ```
 
 Gráfico de setores com a distribuição da variável:  
@@ -175,18 +168,12 @@ Continua...
 
 
 ### Relação de sexo com a perda do emprego  
+
 A tabela de frequência absoluta:  
 
 ```{r }
 table(dados$sexo, dados$perdeu_emprego)
 ```
-
-A tabela de frequência relativa:  
-
-```{r }
-prop.table(table(dados$sexo, dados$perdeu_emprego))
-```
-
 
 ## Conclusão  
 Concluímos que ...   
