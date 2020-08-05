@@ -1,0 +1,198 @@
+---
+title: "Relatório pandemia e desemprego"
+author: "CAGIDO, A. C. F; MANGABEIRA, E. F; DO AMARAL, F. R. K; DA MOTA, I. P; CRUZ,
+  J. V. M; MAGALHÃES, J. C. S"
+date: "04/08/2020"
+output:
+  html_document: default
+---
+
+
+## Resumo  
+Essa pesquisa tem como propósito tentar achar relações entre a pandemia o emprego 
+e o desemprego. Fazendo correlações entre as variáveis tentar entender as mudanças 
+nos trabalhos de quem continuou com emprego, entender os motivos da demissão por quem 
+perdeu o emprego, verificar possíveis relaçãoes entre a perda do emprego com a renda, 
+raça, sexo e idade.  
+
+## Resultados  
+Inicialmente serão carregadas as bibliotecas usadas  
+
+```{r }
+library(psych)
+library(stringr)
+```
+
+Após carregar as bibliotecas, será lido os dados que estão em um CSV gerado pelo Google forms  
+
+```{r }
+dados <- read.csv('parcial.csv', encoding = 'UTF-8')
+```
+
+```{r echo=FALSE}
+colnames(dados) <- c('hora', 'idade', 'sexo', 'raca', 'perdeu_emprego', 'motivo', 'fonte_renda', 'conhece', 'auxilio', 'renda_antes', 'renda_atual', 'saiu_emprego', 'saiu_buscar_emprego', 'avaliacao_estadual_crise', 'avaliacao_federal_economia', 'avaliacao_federal_pandemia')
+```
+
+O estudo conta com uma amostra de ``r dim(dados)[1]`` pessoas.
+
+### Idade
+Idade é uma variável quantitativa discreta, e por ter muitas idades diferentes, será dividida em intervalos.  
+
+```{r }
+valores_idade <- describe(dados$idade)
+
+sturges <- nclass.Sturges(dados$idade)
+```
+
+A tabela de frequência absoluta:  
+
+```{r }
+table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1)))
+```
+
+A tabela de frequência relativa:  
+
+```{r }
+prop.table(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1))))
+```
+
+Os valores da variável, como valores de medida central e de dispersão:  
+
+```{r }
+valores_idade
+```
+
+O histograma com a distribuição por faixa etária:  
+```{r }
+hist(dados$idade, col = '#999999', freq = FALSE, ylab = 'Densidade', xlab = 'Idade', main = 'Disitruição por faixa etária')
+```
+
+### Sexo
+Sexo é uma variável categórica nominal.  
+
+A tabela de frequência absuluta:  
+
+```{r }
+table(dados$sexo)
+```
+
+A tabela de frequência relativa:  
+
+```{r }
+prop.table(table(dados$sexo))
+```
+
+Gráfico de setores com a distribuição da variável:  
+
+```{r }
+pie(x = table(dados$sexo), main = "Distribuição por sexo")
+```
+
+### Raça
+Raça é uma variável categórica nominal.  
+
+A tabela de frequência absoluta:  
+
+```{r }
+table(dados$raca)
+```
+
+A tabela de frequência relativa:  
+
+```{r }
+prop.table(table(dados$raca))
+```
+
+Gráfico de setores com a distribuição da variável:  
+
+```{r }
+pie(x = table(dados$raca), main = "Distribuição por raça")
+```
+
+### Perdeu o emprego?  
+
+Essa pergunta aceita com resposta sim ou não, logo é categórica nominal.  
+
+A tabela de frequência absoluta:  
+
+```{r }
+table(dados$perdeu_emprego)
+```
+
+A tabela de frequência relativa:  
+
+```{r }
+prop.table(table(dados$perdeu_emprego))
+```
+
+Gráfico de setores com a distribuição da variável:  
+
+```{r }
+pie(x = table(dados$perdeu_emprego), main = 'Distribuição por perda de emprego no período da pandemia')
+```
+
+### Motivo da perda do emprego  
+
+Essa pergunta está relacionada com as respostas da anterior, só pode ser consideradas as que respondera 'Sim' na pergunta anterior.  
+Por isso é necessário limpar as possíveis incoerências:  
+
+```{r }
+for(i in 1:dim(dados)[1]){
+  if(dados$perdeu_emprego[i] != 'Sim') {
+    dados$motivo[i] <- ''
+  }
+}
+```
+
+Após isso pode-se fazer as tabelas.  
+
+Como serão analisadas apenas as respostas de quem respondeu 'Sim' na anterior, 
+logo apenas ``r dim(table(dados$motivo, exclude = ''))`` respostas serão analisadas.  
+
+A tabela de frequência absoluta:  
+
+```{r }
+table(dados$motivo, exclude = '')
+```
+
+A tabela de frequência relativa:  
+
+```{r }
+prop.table(table(dados$motivo, exclude = ''))
+```
+
+Gráfico de setores com a distribuição da variável:  
+
+```{r }
+pie(x = table(dados$motivo, exclude = ''), main = 'Distribuição por motivo da demissão')
+```
+
+### Fonte de renda
+
+Essa pergunta aceita múltiplas respostas, logo o total não será necessariamente o tamanho da amostra e sim o total de respostas.  
+
+Continua...  
+
+
+### Relação de sexo com a perda do emprego  
+A tabela de frequência absoluta:  
+
+```{r }
+table(dados$sexo, dados$perdeu_emprego)
+```
+
+A tabela de frequência relativa:  
+
+```{r }
+prop.table(table(dados$sexo, dados$perdeu_emprego))
+```
+
+
+## Conclusão  
+Concluímos que ...   
+
+
+
+
+
+
