@@ -18,7 +18,7 @@ raça, sexo e idade.
 ## Resultados  
 Inicialmente serão carregadas as bibliotecas usadas  
 
-```{r }
+```{r message=FALSE}
 library(kableExtra)
 library(stringr)
 library(ggplot2)
@@ -49,6 +49,21 @@ tabela <- function(freq_abs, title) {
   colnames(tabela) <-  c('Freq. Abs.', 'Freq. Rel.', 'Porcentagem')
   
   row.names(tabela)[dim(freq_abs)+1] <- 'Total'
+  
+  kable(tabela, caption = title, align = 'ccc') %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+}
+
+#Correlação de duas variáveis
+tabela_c_abs <- function(freq, title) {
+  
+  tabela <- rbind(freq, colSums(freq))
+  tabela <- cbind(tabela, rowSums(freq))
+  
+  row.names(tabela)[dim(tabela)[1]] <- "Total"
+  colnames(tabela)[dim(tabela)[2]] <- "Total"
+  
+  tabela[dim(tabela)[1],dim(tabela)[2]] <- sum(freq)
   
   kable(tabela, caption = title, align = 'ccc') %>%
     kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
@@ -94,7 +109,7 @@ tabela(table(dados$sexo), 'Distribuição por sexo')
 
 Gráfico de barras com a distribuição da variável:  
 
-```{r }
+```{r message=FALSE}
 
 sexo <- data.frame(label = row.names(table(dados$sexo)))
 
@@ -116,7 +131,7 @@ tabela(table(dados$raca), 'Distribuição por raça')
 
 Gráfico de setores com a distribuição da variável:  
 
-```{r }
+```{r message=FALSE}
 raca <- data.frame(label = row.names(table(dados$raca)))
 
 ggplot(raca, aes(x = label, y = table(dados$raca))) +
@@ -140,7 +155,7 @@ tabela(table(dados$perdeu_emprego), 'Distribuição por perda de emprego no per�
 
 Gráfico de setores com a distribuição da variável:  
 
-```{r }
+```{r message=FALSE}
 perdeu_emprego <- data.frame(label = row.names(table(dados$perdeu_emprego)))
 
 ggplot(perdeu_emprego, aes(x = label, y = table(dados$perdeu_emprego))) +
@@ -178,7 +193,7 @@ tabela(table(dados$motivo, exclude = ''), 'Distribuição por motivo da demissã
 
 Gráfico de setores com a distribuição da variável:  
 
-```{r }
+```{r message=FALSE}
 motivo <- data.frame(label = row.names(table(dados$motivo, exclude = '')))
 
 ggplot(motivo, aes(x = label, y = table(dados$motivo, exclude = ''))) +
@@ -198,10 +213,18 @@ Continua...
 
 ### Relação de sexo com a perda do emprego  
 
-A tabela de frequência absoluta:  
+A tabela de contigência:  
 
-```{r }
-table(dados$sexo, dados$perdeu_emprego)
+```{r warning=FALSE}
+tabela_c_abs(table(dados$sexo, dados$perdeu_emprego), 'Correlação de sexo com a perda do emprego')
+```
+
+### Relação de raça com a perda do emprego
+
+A tabela de contigência:  
+
+```{r warning=FALSE}
+tabela_c_abs(table(dados$raca, dados$perdeu_emprego), 'Correlação de raça com a perda do emprego')
 ```
 
 ## Conclusão  
