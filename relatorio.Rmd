@@ -23,6 +23,7 @@ library(kableExtra)
 library(stringr)
 library(ggplot2)
 library(psych)
+library(dplyr)
 ```
 
 Após carregar as bibliotecas, será lido os dados que estão em um CSV gerado pelo Google forms  
@@ -129,7 +130,7 @@ A tabela de frequência:
 tabela(table(dados$raca), 'Distribuição por raça')
 ```
 
-Gráfico de setores com a distribuição da variável:  
+Gráfico de barras com a distribuição da variável:  
 
 ```{r message=FALSE}
 raca <- data.frame(label = row.names(table(dados$raca)))
@@ -153,7 +154,7 @@ tabela(table(dados$perdeu_emprego), 'Distribuição por perda de emprego no per�
 
 ```
 
-Gráfico de setores com a distribuição da variável:  
+Gráfico de barras com a distribuição da variável:  
 
 ```{r message=FALSE}
 perdeu_emprego <- data.frame(label = row.names(table(dados$perdeu_emprego)))
@@ -191,7 +192,7 @@ A tabela de frequência:
 tabela(table(dados$motivo, exclude = ''), 'Distribuição por motivo da demissão')
 ```
 
-Gráfico de setores com a distribuição da variável:  
+Gráfico de barras com a distribuição da variável:  
 
 ```{r message=FALSE}
 motivo <- data.frame(label = row.names(table(dados$motivo, exclude = '')))
@@ -204,11 +205,120 @@ labs(title = "Distribuição por motivo da demissão",
   coord_flip()
 ```
 
-### Fonte de renda
+### Fonte da renda
 
 Essa pergunta aceita múltiplas respostas, logo o total não será necessariamente o tamanho da amostra e sim o total de respostas.  
 
-Continua...  
+A tabela de frequêmcia:  
+
+```{r }
+
+fonte <- dados$fonte_renda
+tam <- length(fonte)
+for(i in 1:tam) {
+  if(str_detect(fonte[i], ';')) {
+    result <- str_split(fonte[i], ';')
+    for(j in 1:length(result[[1]])) {
+      fonte <- c(fonte, result[[1]][j])
+    }
+    fonte <- c(fonte[1:(i-1)], fonte[(i+1):length(fonte)])
+  }
+}
+
+tabela(table(fonte, exclude = ''), 'Distribuição por fonte da renda')
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+fonte_renda <- data.frame(label = row.names(table(fonte)))
+
+ggplot(fonte_renda, aes(x = label, y = table(fonte))) +
+geom_col(fill = '#ffff60') +
+labs(title = "Distribuição por fonte da renda",
+     x = "Fonte da renda",
+     y = "Frequência")+
+  coord_flip()
+
+```  
+
+### Conhece alguém que perdeu o emprego na pandemia  
+
+Com relação à se o entrevistado conhece alguém que perdeu o emprego durante o período de pandemia.  
+
+A tabela de frequência:  
+
+```{r }
+
+tabela(table(dados$conhece), 'Distribuição por conhecimento de pessoas que perderam o emprego na pandemia')
+
+```
+
+O gráfico de colunas com a distribuição da variável:  
+
+```{r message=FALSE}
+conhece <- data.frame(label = row.names(table(dados$conhece)))
+
+ggplot(conhece, aes(x = label, y = table(dados$conhece))) +
+geom_col(fill = '#60ffff') +
+labs(title = "Distribuição por conhecimento de pessoas que perderam o emprego na pandemia",
+     x = "Conhece",
+     y = "Frequência")
+
+```
+
+### Buscou o auxílio emergencial  
+
+Já com relação às pessoas que buscaram o auxílio emergencial.  
+
+A tabela de frequência:  
+
+```{r }
+
+tabela(table(dados$auxilio), 'Distribuição por pessoas que buscaram o auxílio emergencial')
+
+```
+
+O gráfico de colunas com a distribuição da variável:  
+
+```{r message=FALSE}
+auxilio <- data.frame(label = row.names(table(dados$auxilio)))
+
+ggplot(auxilio, aes(x = label, y = table(dados$auxilio))) +
+geom_col(fill = '#000000') +
+labs(title = "Distribuição por pessoas que buscaram o auxílio emergencial",
+     x = "Buscou auxílio",
+     y = "Frequência")
+
+```
+
+
+### Renda mensal antes da pandemia
+
+Essa pergunta está relacionada à renda mensal que o entrevistado tinha antes do período de pandemia começar.  
+
+A tabela de frequência:  
+
+```{r}
+# ideal seria deixar em ordem e fazer a frequência acumulada
+tabela(table(dados$renda_antes), 'Distribuição por renda antes da pandemia')
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+renda_antes <- data.frame(label = row.names(table(dados$renda_antes)))
+
+ggplot(renda_antes, aes(x = label, y = table(dados$renda_antes))) +
+geom_col(fill = '#ccff80') +
+labs(title = "Distribuição por renda antes da pandemia",
+     x = "Renda",
+     y = "Frequência")
+
+```
+
 
 
 ### Relação de sexo com a perda do emprego  
