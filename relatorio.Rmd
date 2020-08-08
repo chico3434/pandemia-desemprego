@@ -216,12 +216,12 @@ A tabela de frequêmcia:
 fonte <- dados$fonte_renda
 tam <- length(fonte)
 for(i in 1:tam) {
-  if(str_detect(fonte[i], ';')) {
+  if(grepl(';', fonte[i])) {
     result <- str_split(fonte[i], ';')
     for(j in 1:length(result[[1]])) {
       fonte <- c(fonte, result[[1]][j])
     }
-    fonte <- c(fonte[1:(i-1)], fonte[(i+1):length(fonte)])
+    fonte[i] <- ''
   }
 }
 
@@ -232,9 +232,9 @@ tabela(table(fonte, exclude = ''), 'Distribuição por fonte da renda')
 O gráfico de barras com a distribuição da variável:  
 
 ```{r message=FALSE}
-fonte_renda <- data.frame(label = row.names(table(fonte)))
+fonte_renda <- data.frame(label = row.names(table(fonte, exclude = '')))
 
-ggplot(fonte_renda, aes(x = label, y = table(fonte))) +
+ggplot(fonte_renda, aes(x = label, y = table(fonte, exclude = ''))) +
 geom_col(fill = '#ffff60') +
 labs(title = "Distribuição por fonte da renda",
      x = "Fonte da renda",
