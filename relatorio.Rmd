@@ -55,6 +55,40 @@ tabela <- function(freq_abs, title) {
     kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
 }
 
+tabela_a <- function(freq_abs, title) {
+  freq_rel <- prop.table(freq_abs)
+  porcentagem <- freq_rel*100
+  acumulada <- cumsum(freq_abs)
+  acumulada_rel <- prop.table(freq_abs) %>% cumsum()
+  
+  tabela <- cbind(c(freq_abs, sum(freq_abs)), round(x = c(freq_rel, sum(freq_rel)), digits = 2), c(str_c(round(x = porcentagem, digits = 2), '%'), str_c(round(x = sum(porcentagem), digits = 2),'%')), c(acumulada, ''), c(round(x = acumulada_rel, digits = 2), ''))
+  
+  colnames(tabela) <-  c('Freq. Abs.', 'Freq. Rel.', 'Porcentagem', 'Freq. Acum.', 'Freq. Acum. Rel.')
+  
+  row.names(tabela)[dim(freq_abs)+1] <- 'Total'
+  
+  kable(tabela, caption = title, align = 'ccc') %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+}
+
+tabela_av <- function(freq_abs, title) {
+  freq_rel <- prop.table(freq_abs)
+  porcentagem <- freq_rel*100
+  acumulada <- cumsum(freq_abs)
+  acumulada_rel <- prop.table(freq_abs) %>% cumsum()
+  
+  tabela <- cbind(c(freq_abs, sum(freq_abs)), round(x = c(freq_rel, sum(freq_rel)), digits = 2), c(str_c(round(x = porcentagem, digits = 2), '%'), str_c(round(x = sum(porcentagem), digits = 2),'%')), c(acumulada, ''), c(round(x = acumulada_rel, digits = 2), ''))
+  
+  colnames(tabela) <-  c('Freq. Abs.', 'Freq. Rel.', 'Porcentagem', 'Freq. Acum.', 'Freq. Acum. Rel.')
+  
+  row.names(tabela) <- c("Péssimo", "Ruim", "Razoável", "Bom", "Excelente", "Total")
+  
+  #row.names(tabela)[dim(freq_abs)+1] <- 'Total'
+  
+  kable(tabela, caption = title, align = 'ccc') %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+}
+
 #Correlação de duas variáveis
 tabela_c_abs <- function(freq, title) {
   
@@ -83,7 +117,8 @@ sturges <- nclass.Sturges(dados$idade)
 A tabela de frequência:  
 
 ```{r }
-tabela(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1))), 'Distribuição por faixa etária')
+
+tabela_a(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = sturges+1))), 'Distribuição por faixa etária')
 
 ```
 
@@ -115,7 +150,7 @@ Gráfico de barras com a distribuição da variável:
 sexo <- data.frame(label = row.names(table(dados$sexo)))
 
 ggplot(sexo, aes(x = label, y = table(dados$sexo))) +
-geom_col(fill = '#ff6060') +
+geom_col(fill = '#ff6060') + scale_fill_brewer(palette="Dark2") +
 labs(title = "Distribuição por sexo",
      x = "Sexo",
      y = "Frequência")
@@ -298,27 +333,211 @@ labs(title = "Distribuição por pessoas que buscaram o auxílio emergencial",
 
 Essa pergunta está relacionada à renda mensal que o entrevistado tinha antes do período de pandemia começar.  
 
+Por ser uma variável ordinal, para fazer a frequência acumulada serão retirados os "Prefiro não dizer".  
+
 A tabela de frequência:  
 
 ```{r}
-# ideal seria deixar em ordem e fazer a frequência acumulada
-tabela(table(dados$renda_antes), 'Distribuição por renda antes da pandemia')
+renda_antes <- dados$renda_antes
+
+for(i in 1:length(renda_antes)) {
+  if(renda_antes[i] == 'Menos de R$1045,00') {
+    renda_antes[i] <- 'De R$0,00 até R$1045,00'
+  }
+}
+
+tabela_a(table(renda_antes, exclude = 'Prefiro não dizer'), 'Distribuição por renda antes da pandemia')
 
 ```
 
 O gráfico de barras com a distribuição da variável:  
 
 ```{r message=FALSE}
-renda_antes <- data.frame(label = row.names(table(dados$renda_antes)))
+renda_antes_d <- data.frame(label = row.names(table(renda_antes, exclude = 'Prefiro não dizer')))
 
-ggplot(renda_antes, aes(x = label, y = table(dados$renda_antes))) +
+ggplot(renda_antes_d, aes(x = label, y = table(renda_antes, exclude = 'Prefiro não dizer'))) +
 geom_col(fill = '#ccff80') +
 labs(title = "Distribuição por renda antes da pandemia",
      x = "Renda",
+     y = "Frequência")+
+  coord_flip()
+
+```
+
+### Renda mensal atual
+
+Essa pergunta está relacionada à renda mensal que o entrevistado tem atualmente.  
+
+Por ser uma variável ordinal, para fazer a frequência acumulada serão retirados os "Prefiro não dizer".  
+
+A tabela de frequência:  
+
+```{r}
+
+renda_atual <- dados$renda_atual
+
+for(i in 1:length(renda_atual)) {
+  if(renda_atual[i] == 'Menos de R$1045,00') {
+    renda_atual[i] <- 'De R$0,00 até R$1045,00'
+  }
+}
+
+tabela_a(table(renda_atual, exclude = 'Prefiro não dizer'), 'Distribuição por renda mensal atual')
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+renda_atual_d <- data.frame(label = row.names(table(renda_atual, exclude = 'Prefiro não dizer')))
+
+ggplot(renda_atual_d, aes(x = label, y = table(renda_atual, exclude = 'Prefiro não dizer'))) +
+geom_col(fill = '#ccff80') +
+labs(title = "Distribuição por renda mensal atual",
+     x = "Renda",
+     y = "Frequência")+
+  coord_flip()
+
+```
+
+### Saiu de casa durante a pandemia por causa do emprego
+
+Descrever a variável
+
+A tabela de frequência:  
+
+```{r }
+saiu_emprego <- dados$saiu_emprego
+
+# transformar nenhum em 0 para o table retornar já ordenado
+for(i in 1:length(saiu_emprego)) {
+  if(saiu_emprego[i] == 'Nenhum, trabalho de home office') {
+    saiu_emprego[i] <- '0, trabalho de home office'
+  }
+}
+
+tabela_a(table(saiu_emprego, exclude = c('', 'Prefiro não dizer')), 'Distribuição por saída de casa por causa do emprego')
+
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+saiu_emprego_d <- data.frame(label = row.names(table(saiu_emprego, exclude = c('', 'Prefiro não dizer'))))
+
+ggplot(saiu_emprego_d, aes(x = label, y = table(saiu_emprego, exclude = c('', 'Prefiro não dizer')))) +
+geom_col(fill = '#ff80cc') +
+labs(title = "Distribuição por saída de casa por causa do emprego",
+     x = "Saiu de casa",
+     y = "Frequência")+
+  coord_flip()
+
+```
+
+### Saiu de casa para procurar emprego ou buscar auxílio  
+
+Descrever variável.  
+
+A tabela de frequência:  
+
+```{r }
+
+saiu_buscar_emprego <- dados$saiu_buscar_emprego
+
+# transformar nenhum em 0 para o table retornar já ordenado
+for(i in 1:length(saiu_buscar_emprego)) {
+  if(saiu_buscar_emprego[i] == 'Nenhum') {
+    saiu_buscar_emprego[i] <- '0'
+  }
+}
+
+tabela_a(table(saiu_buscar_emprego, exclude = c('', 'Prefiro não dizer')), 'Distribuição por saída de casa para procurar emprego ou buscar auxílio')
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+saiu_buscar_emprego_d <- data.frame(label = row.names(table(saiu_buscar_emprego, exclude = c('', 'Prefiro não dizer'))))
+
+ggplot(saiu_buscar_emprego_d, aes(x = label, y = table(saiu_buscar_emprego, exclude = c('', 'Prefiro não dizer')))) +
+geom_col(fill = '#ff80cc') +
+labs(title = "Distribuição por saída de casa para procurar emprego ou buscar auxílio",
+     x = "Saiu de casa",
+     y = "Frequência")+
+  coord_flip()
+
+```
+
+### Avaliação do enfrentamento da crise pelo governo estadual
+
+A tabela de frequência:  
+
+```{r }
+
+tabela_av(table(dados$avaliacao_estadual_crise), 'Distribuição da avaliação do enfrentamento da crise pelo governo estadual')
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+av_est <- data.frame(label = row.names(table(dados$avaliacao_estadual_crise)))
+
+ggplot(av_est, aes(x = label, y = table(dados$avaliacao_estadual_crise))) +
+geom_col(fill = '#ff80cc') +
+labs(title = "Distribuição da avaliação do enfrentamento da crise pelo governo estadual",
+     x = "Avaliação",
      y = "Frequência")
 
 ```
 
+### Avaliação do trabalho do governo federal com relação à economia
+
+A tabela de frequência:  
+
+```{r }
+
+tabela_av(table(dados$avaliacao_federal_economia), 'Distribuição da avaliação do trabalho do governo federal com relação à economia')
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+av_fed_ec <- data.frame(label = row.names(table(dados$avaliacao_federal_economia)))
+
+ggplot(av_fed_ec, aes(x = label, y = table(dados$avaliacao_federal_economia))) +
+geom_col(fill = '#ff80cc') +
+labs(title = "Distribuição da avaliação do trabalho do governo federal com relação à economia",
+     x = "Avaliação",
+     y = "Frequência")
+
+```
+
+### Avaliação do enfrentamento do governo federal com relação à pandemia
+
+A tabela de frequência:  
+
+```{r }
+
+tabela_av(table(dados$avaliacao_estadual_crise), 'Distribuição da avaliação do enfrentamento do governo federal com relação à pandemia')
+
+```
+
+O gráfico de barras com a distribuição da variável:  
+
+```{r message=FALSE}
+av_fed <- data.frame(label = row.names(table(dados$avaliacao_federal_pandemia)))
+
+ggplot(av_fed, aes(x = label, y = table(dados$avaliacao_federal_pandemia))) +
+geom_col(fill = '#ff80cc') +
+labs(title = "Distribuição da avaliação do enfrentamento do governo federal com relação à pandemia",
+     x = "Avaliação",
+     y = "Frequência")
+
+```
 
 
 ### Relação de sexo com a perda do emprego  
@@ -326,8 +545,19 @@ labs(title = "Distribuição por renda antes da pandemia",
 A tabela de contigência:  
 
 ```{r warning=FALSE}
+
 tabela_c_abs(table(dados$sexo, dados$perdeu_emprego), 'Correlação de sexo com a perda do emprego')
+
 ```
+
+O gráfico de mosaico:  
+
+```{r }
+
+mosaicplot(table(dados$perdeu_emprego, dados$sexo, exclude = 'Prefiro não dizer'), main = 'Gráfico de mosaico da relação entre sexo e perda de emprego')
+
+```
+
 
 ### Relação de raça com a perda do emprego
 
@@ -335,6 +565,12 @@ A tabela de contigência:
 
 ```{r warning=FALSE}
 tabela_c_abs(table(dados$raca, dados$perdeu_emprego), 'Correlação de raça com a perda do emprego')
+```
+
+```{r }
+
+mosaicplot(table(dados$perdeu_emprego, dados$raca, exclude = 'Prefiro não dizer'), main = 'Gráfico de mosaico da relação entre sexo e perda de emprego')
+
 ```
 
 ## Conclusão  
