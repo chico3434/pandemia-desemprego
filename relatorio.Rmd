@@ -1,29 +1,43 @@
 ---
 title: "Relatório pandemia e desemprego"
+date: "`r Sys.Date()`"
 author: "CAGIDO, A. C. F; MANGABEIRA, E. F; DO AMARAL, F. R. K; DA MOTA, I. P; CRUZ,
   J. V. M; MAGALHÃES, J. C. S"
-date: "04/08/2020"
 output:
-  html_document: default
+    rmdformats::readthedown:
+    theme: yeti
+    highlight: kate
 ---
 
+<style>
 
-## Resumo  
-Essa pesquisa tem como propósito tentar achar relações entre a pandemia o emprego 
-e o desemprego. Fazendo correlações entre as variáveis tentar entender as mudanças 
+body{
+  text-align: justify;
+}
+
+</style>
+
+
+## Resumo
+
+Essa pesquisa tem como propósito tentar achar relações entre a pandemia, emprego 
+e desemprego. Fazendo correlações entre as variáveis tentar entender as mudanças 
 nos trabalhos de quem continuou com emprego, entender os motivos da demissão por quem 
-perdeu o emprego, verificar possíveis relaçãoes entre a perda do emprego com a renda, 
+perdeu o emprego, verificar possíveis relações entre a perda do emprego com a renda, 
 raça, sexo e idade.  
 
 ## Resultados  
+
 Inicialmente serão carregadas as bibliotecas usadas  
 
-```{r message=FALSE}
+```{r message=FALSE, warning=FALSE}
 library(kableExtra)
 library(stringr)
 library(ggplot2)
 library(psych)
 library(dplyr)
+library(rsconnect)
+library(rmdformats)
 ```
 
 Após carregar as bibliotecas, será lido os dados que estão em um CSV gerado pelo Google forms  
