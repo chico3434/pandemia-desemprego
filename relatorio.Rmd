@@ -29,7 +29,7 @@ library(dplyr)
 Após carregar as bibliotecas, será lido os dados que estão em um CSV gerado pelo Google forms  
 
 ```{r }
-dados <- read.csv('parcial.csv', encoding = 'UTF-8')
+dados <- read.csv('Final.csv', encoding = 'UTF-8')
 ```
 
 ```{r echo=FALSE}
@@ -130,7 +130,8 @@ valores_idade
 
 O histograma com a distribuição por faixa etária:  
 ```{r }
-hist(dados$idade, col = '#999999', freq = FALSE, ylab = 'Densidade', xlab = 'Idade', main = 'Disitruição por faixa etária')
+hist(dados$idade, col = '#606060', freq = FALSE, ylab = 'Densidade', xlab = 'Idade', main = 'Disitruição por faixa etária')
+
 ```
 
 ### Sexo
@@ -359,7 +360,7 @@ ggplot(renda_antes_d, aes(x = label, y = table(renda_antes, exclude = 'Prefiro n
 geom_col(fill = '#ccff80') +
 labs(title = "Distribuição por renda antes da pandemia",
      x = "Renda",
-     y = "Frequência")+
+     y = "Frequência") +
   coord_flip()
 
 ```
@@ -395,7 +396,7 @@ ggplot(renda_atual_d, aes(x = label, y = table(renda_atual, exclude = 'Prefiro n
 geom_col(fill = '#ccff80') +
 labs(title = "Distribuição por renda mensal atual",
      x = "Renda",
-     y = "Frequência")+
+     y = "Frequência") +
   coord_flip()
 
 ```
