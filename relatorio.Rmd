@@ -20,11 +20,33 @@ body{
 
 ## Resumo
 
-Essa pesquisa tem como propósito tentar achar relações entre a pandemia, emprego 
-e desemprego. Fazendo correlações entre as variáveis tentar entender as mudanças 
-nos trabalhos de quem continuou com emprego, entender os motivos da demissão por quem 
-perdeu o emprego, verificar possíveis relações entre a perda do emprego com a renda, 
-raça, sexo e idade.  
+O objetivo da pesquisa é explorar dados sobre desemprego durante a pandemia, se possível avaliando em termos quantitativos os efeitos do auxílio emergencial governamental para a população, frente a um momento histórico de crise sanitária mundial e crise política nacional. Também será avaliada a percepção das pessoas sobre as ações tomadas pelo governo para conter o avanço do COVID-19.  
+
+## Introdução  
+
+O ano de 2020 entra para história mundial como um período em que a humanidade enfrentou uma crise sanitária, econômica e social gerada pela pandemia do novo Coronavírus. Conforme o trabalho de Brandão (2020), esta situação globalizada desencadeou uma série de debates sobre como mitigar os efeitos econômicos e sociais da doença, assim como, a necessidade do distanciamento social que reduziu a demanda da população, e consequentemente obteve um efeito negativo sobre o nível de emprego e de renda, além de reduzir os investimentos, sobretudo privados.  
+
+
+O objetivo principal desse estudo foi analisar, a partir da percepção dos respondentes, aspectos relacionados ao comportamento das pessoas e como estas estão sendo afetadas durante o isolamento social imposto pela pandemia da COVID-19. As dimensões avaliadas levaram em consideração: fatores econômicos (impacto na renda/gastos), de saúde (nível de estresse, prática de atividade física, qualidade do sono), ambientais (quantidade de pessoas na residência, percepção de conforto da residência, presença de áreas abertas na residência), e ao tempo que as pessoas estão dispostas a se manterem em isolamento no contexto da pandemia.  
+
+## Metodologia  
+
+Trata-se de um estudo transversal realizado a partir de um questionário com quinze perguntas objetivas no formato de pesquisa de opinião, conforme normas da resolução 510/16 (MINISTÉRIO DA SAÚDE, 2016). Não foi necessário nenhum tipo de identificação dos respondentes e a participação foi voluntária. A investigação trata de questões reverentes a emprego e desemprego durante a pandemia e para isso foi criado um questionário no Google Forms.  
+
+A pesquisa reuniu dados em meio ao universo da população do Estado do Rio de Janeiro, mais especificamente entre aqueles que deveriam estar inseridos na população economicamente ativa, seja locado no mercado de trabalho ou desempregados.  
+
+O questionário foi estruturado em quatro partes, para identificar o máximo de dados relacionados aos objetivos.  
+
+1) Questões referentes ao perfil socioeconômico dos respondentes, contendo as variáveis de sexo, idade, raça e faixa de renda.  
+
+2) Perguntas referente ao isolamento e ao impacto dele na vida das pessoas com as seguintes variáveis: se está ou não isolado, por que não está isolado, qual o principal impacto do isolamento, como o isolamento está afetando a renda/gastos e a saúde.  
+
+3) Questões referentes às atitudes dos Governador do Estado do Rio de Janeiro e do Presidente da República Federativa do Brasil em relação ao isolamento social e economia: decisão do governo estadual para o enfrentamento da crise na saúde o trabalho do governo federal com relação à economia do Brasil durante a crise causada pelo novo Coronavírus, e valia o enfrentamento do governo federal em relação à pandemia.  
+
+4) A última pergunta (não do questionário) foi sobre a inscrição no programa Federal da CAIXA, para o recebimento do Auxílio Emergencial do Governo Federal.  
+
+O instrumento de coleta foi construído na plataforma Formulários Google® e divulgado via internet, através dos aplicativos e redes sociais: whatsapp, instagram e facebook, entre os dias 2 e 8 de agosto de 2020. Ao todo, obtiveram-se 17.254 respostas de pessoas do Estado do Rio de Janeiro.  
+
 
 ## Resultados  
 
@@ -591,6 +613,11 @@ mosaicplot(table(dados$perdeu_emprego, dados$raca, exclude = 'Prefiro não dizer
 ## Conclusão  
 Concluímos que ...   
 
+## Referencial Bibliográfico  
+
+BRANDÃO, Vinicius. O papel do Estado como garantidor de emprego e renda durante a pandemia do novo Coronavírus. **Thiago Antoniolli Resposta econômica à Pandemia do Covid-19: Análise do balanço setorial financeiro da economia**, p. 50.  
+
+MINISTÉRIO DA SAÚDE. Conselho Nacional de Saúde. Resolução nº 510, de 7 de abril de 2016. Dispõe sobre as normas aplicáveis a pesquisas em Ciências Humanas e Sociais. *Diário Oficial da União* 2016.  
 
 
 
