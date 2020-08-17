@@ -39,7 +39,7 @@ O questionário foi estruturado em quatro partes, para identificar o máximo de 
 
 1) Questões referentes ao perfil socioeconômico dos respondentes, contendo as variáveis de sexo, idade, raça e faixa de renda.  
 
-2) Perguntas referente ao isolamento e ao impacto na vida das pessoas com as seguintes variáveis: se está ou não isolado, porquê não está isolado, qual o principal impacto do isolamento, como o isolamento está afetando a renda/gastos e a saúde.  
+2) Perguntas referentes ao isolamento e ao impacto dele na vida das pessoas.   
 
 3) Questões referentes às atitudes do Governo do Estado do Rio de Janeiro e do Governo Federal em relação ao isolamento social e à economia.
 
