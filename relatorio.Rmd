@@ -24,14 +24,14 @@ O objetivo da pesquisa é explorar dados sobre desemprego durante a pandemia, se
 
 ## Introdução  
 
-O ano de 2020 entra para história mundial como um período em que a humanidade enfrentou uma crise sanitária, econômica e social gerada pela pandemia do novo Coronavírus. Conforme o trabalho de Brandão (2020), esta situação globalizada desencadeou uma série de debates sobre como mitigar os efeitos econômicos e sociais da doença, assim como, a necessidade do distanciamento social que reduziu a demanda da população, e consequentemente obteve um efeito negativo sobre o nível de emprego e de renda, além de reduzir os investimentos, sobretudo privados.  
+O ano de 2020 entra para história mundial como um período em que a humanidade enfrentou uma crise sanitária, econômica e social gerada pela pandemia do novo Coronavírus. Conforme o trabalho de Brandão (2020), esta situação globalizada desencadeou uma série de debates sobre como mitigar os efeitos econômicos e sociais da doença, assim como a necessidade do distanciamento social que reduziu a demanda da população, e consequentemente obteve um efeito negativo sobre o nível de emprego e de renda, além de reduzir investimentos, sobretudo privados.  
 
 
-O objetivo principal desse estudo foi analisar, a partir da percepção dos respondentes, aspectos relacionados ao comportamento das pessoas e como estas estão sendo afetadas durante o isolamento social imposto pela pandemia da COVID-19. As dimensões avaliadas levaram em consideração: fatores econômicos (impacto na renda/gastos), de saúde (nível de estresse, prática de atividade física, qualidade do sono), ambientais (quantidade de pessoas na residência, percepção de conforto da residência, presença de áreas abertas na residência), e ao tempo que as pessoas estão dispostas a se manterem em isolamento no contexto da pandemia.  
+O objetivo principal desse estudo foi analisar, a partir da percepção dos respondentes, aspectos relacionados ao comportamento das pessoas e como estas estão sendo afetadas durante o isolamento social imposto pela pandemia da COVID-19. As dimensões avaliadas levaram em consideração fatores econômicos(impacto na renda ou gastos), de saúde (nível de estresse, prática de atividade física, qualidade do sono), relativos ao meio (quantidade de pessoas na residência, percepção de conforto da residência, presença de áreas abertas na residência), e o tempo que as pessoas estão dispostas a se manterem em isolamento no contexto da pandemia. 
 
 ## Metodologia  
 
-Trata-se de um estudo transversal realizado a partir de um questionário com quinze perguntas objetivas no formato de pesquisa de opinião, conforme normas da resolução 510/16 (MINISTÉRIO DA SAÚDE, 2016). Não foi necessário nenhum tipo de identificação dos respondentes e a participação foi voluntária. A investigação trata de questões reverentes a emprego e desemprego durante a pandemia e para isso foi criado um questionário no Google Forms.  
+Trata-se de um estudo transversal realizado a partir de um questionário com quinze perguntas objetivas no formato de pesquisa de opinião, conforme normas da resolução 510/16 (MINISTÉRIO DA SAÚDE, 2016). Não foi necessário nenhum tipo de identificação dos respondentes e a participação foi voluntária. A investigação trata de questões referentes a emprego e desemprego durante a pandemia e para isso foi criado um questionário no Google Forms.
 
 A pesquisa reuniu dados em meio ao universo da população do Estado do Rio de Janeiro, mais especificamente entre aqueles que deveriam estar inseridos na população economicamente ativa, seja locado no mercado de trabalho ou desempregados.  
 
@@ -39,13 +39,13 @@ O questionário foi estruturado em quatro partes, para identificar o máximo de 
 
 1) Questões referentes ao perfil socioeconômico dos respondentes, contendo as variáveis de sexo, idade, raça e faixa de renda.  
 
-2) Perguntas referente ao isolamento e ao impacto dele na vida das pessoas com as seguintes variáveis: se está ou não isolado, por que não está isolado, qual o principal impacto do isolamento, como o isolamento está afetando a renda/gastos e a saúde.  
+2) Perguntas referente ao isolamento e ao impacto na vida das pessoas com as seguintes variáveis: se está ou não isolado, porquê não está isolado, qual o principal impacto do isolamento, como o isolamento está afetando a renda/gastos e a saúde.  
 
-3) Questões referentes às atitudes dos Governador do Estado do Rio de Janeiro e do Presidente da República Federativa do Brasil em relação ao isolamento social e economia: decisão do governo estadual para o enfrentamento da crise na saúde o trabalho do governo federal com relação à economia do Brasil durante a crise causada pelo novo Coronavírus, e valia o enfrentamento do governo federal em relação à pandemia.  
+3) Questões referentes às atitudes do Governo do Estado do Rio de Janeiro e do Governo Federal em relação ao isolamento social e à economia.
 
-4) A última pergunta (não do questionário) foi sobre a inscrição no programa Federal da CAIXA, para o recebimento do Auxílio Emergencial do Governo Federal.  
+4) Sobre a inscrição no programa Federal da CAIXA, para o recebimento do Auxílio Emergencial do Governo Federal.  
 
-O instrumento de coleta foi construído na plataforma Formulários Google® e divulgado via internet, através dos aplicativos e redes sociais: whatsapp, instagram e facebook, entre os dias 2 e 8 de agosto de 2020. Ao todo, obtiveram-se 17.254 respostas de pessoas do Estado do Rio de Janeiro.  
+O instrumento de coleta foi construído na plataforma Formulários Google® e divulgado via internet, por meio dos aplicativos e redes sociais; whatsapp, instagram e facebook, entre os dias 2 e 8 de agosto de 2020. Ao todo, obtiveram-se 136 respostas de pessoas do Estado do Rio de Janeiro.  
 
 
 ## Resultados  
@@ -62,7 +62,7 @@ library(rsconnect)
 library(rmdformats)
 ```
 
-Após carregar as bibliotecas, será lido os dados que estão em um CSV gerado pelo Google forms  
+Após carregar as bibliotecas, serão lidos os dados que estão em um CSV gerado pelo Google forms  
 
 ```{r }
 dados <- read.csv('Final.csv', encoding = 'UTF-8')
@@ -142,7 +142,8 @@ tabela_c_abs <- function(freq, title) {
 ```
 
 ### Idade
-Idade é uma variável quantitativa discreta, e por ter muitas idades diferentes, será dividida em intervalos.  
+
+Idade é uma variável quantitativa discreta, e por serem muitas idades diferentes, será dividida em intervalos.  
 
 ```{r }
 valores_idade <- describe(dados$idade)
@@ -161,12 +162,13 @@ tabela_a(table(cut(dados$idade, seq(valores_idade$min, valores_idade$max, l = st
 Os valores da variável, como valores de medida central e de dispersão:  
 
 ```{r }
-valores_idade
+kable(valores_idade, caption = "medidas", align = 'ccc') %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
 ```
 
 O histograma com a distribuição por faixa etária:  
 ```{r }
-hist(dados$idade, col = '#606060', freq = FALSE, ylab = 'Densidade', xlab = 'Idade', main = 'Disitruição por faixa etária')
+hist(dados$idade, col = '#606060', freq = FALSE, ylab = 'Densidade', xlab = 'Idade', main = 'Distribuição por faixa etária')
 
 ```
 
@@ -217,7 +219,7 @@ labs(title = "Distribuição por raça",
 
 ### Perdeu o emprego?  
 
-Essa pergunta aceita com resposta sim ou não, logo é categórica nominal.  
+Essa pergunta aceita como resposta sim ou não, logo é categórica nominal.  
 
 A tabela de frequência:  
 
@@ -242,7 +244,7 @@ labs(title = "Distribuição por perda de emprego no período da pandemia",
 
 ### Motivo da perda do emprego  
 
-Essa pergunta está relacionada com as respostas da anterior, só pode ser consideradas as que respondera 'Sim' na pergunta anterior.  
+Essa pergunta está relacionada com as respostas da anterior, só podem ser consideradas as que responderam 'Sim' na pergunta anterior.  
 Por isso é necessário limpar as possíveis incoerências:  
 
 ```{r }
@@ -253,7 +255,7 @@ for(i in 1:dim(dados)[1]){
 }
 ```
 
-Após isso pode-se fazer as tabelas.  
+Após isso é possível construir as tabelas.  
 
 Como serão analisadas apenas as respostas de quem respondeu 'Sim' na anterior, 
 logo apenas ``r dim(table(dados$motivo, exclude = ''))`` respostas serão analisadas.  
@@ -317,7 +319,7 @@ labs(title = "Distribuição por fonte da renda",
 
 ### Conhece alguém que perdeu o emprego na pandemia  
 
-Com relação à se o entrevistado conhece alguém que perdeu o emprego durante o período de pandemia.  
+Avalia se o entrevistado conhece alguém que perdeu o emprego durante o período de pandemia.  
 
 A tabela de frequência:  
 
@@ -579,7 +581,7 @@ labs(title = "Distribuição da avaliação do enfrentamento do governo federal 
 
 ### Relação de sexo com a perda do emprego  
 
-A tabela de contigência:  
+A tabela de contingência:  
 
 ```{r warning=FALSE}
 
@@ -598,7 +600,7 @@ mosaicplot(table(dados$perdeu_emprego, dados$sexo, exclude = 'Prefiro não dizer
 
 ### Relação de raça com a perda do emprego
 
-A tabela de contigência:  
+A tabela de contingência:  
 
 ```{r warning=FALSE}
 tabela_c_abs(table(dados$raca, dados$perdeu_emprego), 'Correlação de raça com a perda do emprego')
@@ -611,7 +613,19 @@ mosaicplot(table(dados$perdeu_emprego, dados$raca, exclude = 'Prefiro não dizer
 ```
 
 ## Conclusão  
-Concluímos que ...   
+
+Como conclusão, este estudo nos forneceu algumas informações interessantes sobre emprego e desemprego durante a pandemia, considerando que os entrevistados residem no estado do RJ e a maioria deles tem entre 18 e 32 anos. Para citar algumas, temos que:
+
+1) Boa parte dos entrevistados(84%) conhecem alguém que perdeu o emprego durante a pandemia.
+
+2) Mais da metade dos empregados(64%) estão trabalhando de home office.
+
+3) Muitos dos entrevistados não consideraram boas as ações dos governos federal e estadual para conter a pandemia e seus efeitos colaterais na economia.
+
+4) A maioria das pessoas que perderam emprego foram do sexo feminino.
+
+5) Proporcionalmente, pessoas pretas perderam mais empregos do que pessoas de qualquer outra raça.
+ 
 
 ## Referencial Bibliográfico  
 
