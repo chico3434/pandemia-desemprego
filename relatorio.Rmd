@@ -561,7 +561,7 @@ A tabela de frequência:
 
 ```{r }
 
-tabela_av(table(dados$avaliacao_estadual_crise), 'Distribuição da avaliação do enfrentamento do governo federal com relação à pandemia')
+tabela_av(table(dados$avaliacao_federal_pandemia), 'Distribuição da avaliação do enfrentamento do governo federal com relação à pandemia')
 
 ```
 
